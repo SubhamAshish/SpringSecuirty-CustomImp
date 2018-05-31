@@ -2,6 +2,9 @@ package com.demo.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +16,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.demo.domain.Role;
+import com.demo.domain.RoleFeaturePermissionScheme;
 import com.demo.domain.User;
+import com.demo.domain.UserAreaMapping;
+import com.demo.domain.UserRoleFeaturePermissionMapping;
 import com.demo.model.UserModel;
 import com.demo.service.UserService;
 
@@ -41,25 +46,47 @@ public class CustomUserDetailsService implements UserDetailsService{
 		}
 
 		
-		Collection<Role> roles = user.getRole();
+		 Collection<UserAreaMapping> userAreaMapping = user.getAreas();
 		
-		Collection<GrantedAuthority> grantedAuthority = new ArrayList<>();
+		 Collection<GrantedAuthority> grantedAuthority = new ArrayList<>();
 		
+		 /**
+		  * As one user can have multiple roles
+		  */
+		 Set<Integer> roleIds = new HashSet<>();
+		 
 		/**
-		 * Adding authority like @PreAuthorize("hasAuthority('RoleName')")
-		 * we can customize it according to role-feature-permission based on our requirements
+		 * Adding authority like @PreAuthorize("hasAuthority('feature-permission')")
+		 * 
 		 */
 		
-		roles.forEach(role->{
-			
-			grantedAuthority.add(new SimpleGrantedAuthority(role.getRoleName()));
-			
-			LOGGER.info("Role = " +role.getRoleName());
-			
-		});
+		 userAreaMapping.forEach(userArea->{
+			 
+			 List<UserRoleFeaturePermissionMapping> userRoleFeaturePermissionMappings = userArea.getUserRoleFeaturePermissionMappings();
+			 
+			 userRoleFeaturePermissionMappings.forEach(userRoleFeaturePermission->{
+				 
+				 RoleFeaturePermissionScheme roleFeaturePermissionScheme = userRoleFeaturePermission.getRoleFeaturePermissionScheme();
+				 
+				 //addin role ids here
+				 roleIds.add(roleFeaturePermissionScheme.getRole().getRoleId());
+				 
+				 LOGGER.info("<<Authorites : << : "+roleFeaturePermissionScheme.getFeaturePermissionMapping().getFeature().getFeatureName()
+						 .concat("-")
+						 .concat(roleFeaturePermissionScheme.getFeaturePermissionMapping().getPermission().getPermissionName()));
+				 
+				 grantedAuthority.add(new SimpleGrantedAuthority(
+						 
+						 roleFeaturePermissionScheme.getFeaturePermissionMapping().getFeature().getFeatureName()
+						 .concat("-")
+						 .concat(roleFeaturePermissionScheme.getFeaturePermissionMapping().getPermission().getPermissionName())
+						 
+						 ));
+			 });
+			 
+		 });
 		
-		
-		return new UserModel(user.getUserName(), user.getPassword(), user.isEnabled(), !user.isAccountExpired(), !user.isCredentialexpired(), !user.isAccountLocked(), grantedAuthority,user.getUserId(),roles);
+		return new UserModel(user.getUserName(), user.getPassword(), user.isEnabled(), !user.isAccountExpired(), !user.isCredentialexpired(), !user.isAccountLocked(), grantedAuthority,user.getUserId(),userAreaMapping,roleIds,user.getPassword());
 		
 	}
 

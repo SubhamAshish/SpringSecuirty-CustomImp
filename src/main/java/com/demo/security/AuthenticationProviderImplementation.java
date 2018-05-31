@@ -1,17 +1,18 @@
 package com.demo.security;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author subham
+ *
+ */
 @Component
 public class AuthenticationProviderImplementation extends AbstractUserDetailsAuthenticationProvider {
 	
@@ -32,13 +33,7 @@ public class AuthenticationProviderImplementation extends AbstractUserDetailsAut
 			
 		}
 		
-		/**
-		 * here it still not authenticated....
-		 */
-		
-		Collection<GrantedAuthority> authorities = authentication.getAuthorities();
-		boolean authenticated = authentication.isAuthenticated();
-		
+
 		/**
 		 * authenticated password
 		 */
@@ -48,7 +43,6 @@ public class AuthenticationProviderImplementation extends AbstractUserDetailsAut
 
 		}
 		
-		System.out.println("Is Authenticated - > "+authenticated);
 		
 	}
 
@@ -59,7 +53,6 @@ public class AuthenticationProviderImplementation extends AbstractUserDetailsAut
 		/**
 		 * call loadByUserName method
 		 */
-		
 		return customUserDetailsService.loadUserByUsername(username);
 	}
 	

@@ -40,18 +40,20 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter{
 		 http
 			.httpBasic().and()//indicate basic authentication is requires
 			.authorizeRequests()
-				.antMatchers("/api","/","/userSave","/adminUserSave").permitAll()// /api/anything will be accessible directly no need of any authentication
+				.antMatchers("/api/**","/").permitAll()// /api/anything will be accessible directly no need of any authentication
 				.anyRequest().authenticated()////indicate all request will be secure
 				.and()
 			.csrf().disable();//disable csrf
+		 
 		 
 				//.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
 		 /**
 		  * every time it creates a new session,without all existing session attributes to the new session
 		  */
-		 /*http.sessionManagement()
-		  .sessionFixation().newSession();*/
+		 
+		 http.sessionManagement()
+		  .sessionFixation().newSession();
 		 
 		 //https://docs.spring.io/spring-security/site/docs/5.0.3.RELEASE/reference/htmlsingle/#ns-session-fixation
 		 

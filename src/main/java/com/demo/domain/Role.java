@@ -8,24 +8,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-/**
- * 
- * @author Subham
- *
- */
 @Entity
 public class Role implements Serializable{
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -5837347135467909989L;
+	private static final long serialVersionUID = 262708472299623890L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,16 +33,12 @@ public class Role implements Serializable{
 	private String description;
 
 	@Column(name = "created_date")
-	@CreationTimestamp
 	private Timestamp createdDate;
 
 	@Column(name = "last_updated_date")
-	@UpdateTimestamp
 	private Timestamp lastUpdatedDate;
+
 	
-	@ManyToOne
-	@JoinColumn(name="user_id_fk")
-	private User user;
 
 	public Integer getRoleId() {
 		return roleId;
@@ -109,15 +96,5 @@ public class Role implements Serializable{
 	public Role(int roleId) {
 		this.roleId=roleId;
 	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-	
-	
 	
 }

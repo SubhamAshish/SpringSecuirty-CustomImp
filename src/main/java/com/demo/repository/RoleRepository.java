@@ -6,6 +6,11 @@ import org.springframework.data.repository.RepositoryDefinition;
 
 import com.demo.domain.Role;
 
+
+/**
+ * @author subham
+ *
+ */
 @RepositoryDefinition(domainClass = Role.class, idClass = Integer.class)
 public interface RoleRepository {
 

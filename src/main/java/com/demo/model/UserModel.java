@@ -1,14 +1,14 @@
 package com.demo.model;
 
 import java.util.Collection;
-
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import com.demo.domain.Role;
+import com.demo.domain.UserAreaMapping;
 
-public class UserModel extends User{
+public class UserModel extends User {
 
 	/**
 	 * 
@@ -17,7 +17,12 @@ public class UserModel extends User{
 
 	private Integer userId;
 	
-	Collection<Role> role;
+	private Set<Integer> roleIds;
+	
+	private String hashPassword;
+
+	Collection<UserAreaMapping> userAreaMapping;
+
 	/**
 	 * 
 	 * @param username
@@ -34,10 +39,9 @@ public class UserModel extends User{
 			boolean credentialsNonExpired, boolean accountNonLocked,
 			Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-		
+
 	}
-	
-	
+
 	/**
 	 * 
 	 * @param username
@@ -51,43 +55,54 @@ public class UserModel extends User{
 	 * @param role
 	 * 
 	 * 
-	 * @Desription extra parameter has been passed here to be initialized and return
+	 * @Desription extra parameter has been passed here to be initialized and
+	 *             return
 	 */
 	public UserModel(String username, String password, boolean enabled, boolean accountNonExpired,
-			boolean credentialsNonExpired, boolean accountNonLocked,
-			Collection<? extends GrantedAuthority> authorities,Integer userId,Collection<Role> role) {
-		
-		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-		
-		this.userId=userId;
-		this.role=role;
-		
-	}
+			boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities,
+			Integer userId, Collection<UserAreaMapping> userAreaMapping,Set<Integer>roleIds,String hashPassword) {
 
+		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+
+		this.userId = userId;
+		this.userAreaMapping = userAreaMapping;
+		this.roleIds=roleIds;
+		this.hashPassword=hashPassword;
+
+	}
 
 	public Integer getUserId() {
 		return userId;
 	}
 
-
-
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
-
-
-	public Collection<Role> getRole() {
-		return role;
+	public Collection<UserAreaMapping> getUserAreaMapping() {
+		return userAreaMapping;
 	}
 
-
-
-	public void setRole(Collection<Role> role) {
-		this.role = role;
+	public void setUserAreaMapping(Collection<UserAreaMapping> userAreaMapping) {
+		this.userAreaMapping = userAreaMapping;
 	}
-	
-	
+
+	public Set<Integer> getRoleIds() {
+		return roleIds;
+	}
+
+	public void setRoleIds(Set<Integer> roleIds) {
+		this.roleIds = roleIds;
+	}
+
+	public String getHashPassword() {
+		return hashPassword;
+	}
+
+	public void setHashPassword(String hashPassword) {
+		this.hashPassword = hashPassword;
+	}
+
 	
 	
 }

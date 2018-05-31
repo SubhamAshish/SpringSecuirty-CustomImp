@@ -4,9 +4,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author subham
+ *
+ */
 @RestController
 public class WebController {
-
 	
 	@GetMapping(value = "/api")
 	public String abc() {
@@ -15,7 +18,7 @@ public class WebController {
 	}
 
 	@GetMapping(value = "/check")
-	@PreAuthorize("hasAuthority('USER')") // spring security merge ROLE by default, so we have to use ROLE_USER
+	@PreAuthorize("hasAuthority('user-view')") 
 	public String abcd() {
 
 		return "Hello Check!";
@@ -32,8 +35,6 @@ public class WebController {
 
 		return "Hello Welcome To Spring Secuity!!";
 	}
-	
-	
 	
 	
 }

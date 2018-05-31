@@ -13,6 +13,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+/**
+ * @author subham
+ *
+ */
 @Entity
 @Table(name = "user_tbl", uniqueConstraints = @UniqueConstraint(columnNames = "user_name"))
 public class User implements Serializable {
@@ -33,19 +39,20 @@ public class User implements Serializable {
 	private String password;
 
 	@Column(name = "user_enable", columnDefinition = "boolean DEFAULT true")
-	private boolean enabled=true;
+	private boolean enabled = true;
 
 	@Column(name = "credential_expired", columnDefinition = "boolean DEFAULT false")
-	private boolean credentialexpired=false;
+	private boolean credentialexpired = false;
 
 	@Column(name = "account_expired", columnDefinition = "boolean DEFAULT false")
-	private boolean accountExpired=false;
+	private boolean accountExpired = false;
 
 	@Column(name = "account_locked", columnDefinition = "boolean DEFAULT false")
-	private boolean accountLocked=false;
+	private boolean accountLocked = false;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-	private List<Role> role;
+	List<UserAreaMapping> areas;
 
 	public Integer getUserId() {
 		return userId;
@@ -103,14 +110,12 @@ public class User implements Serializable {
 		this.accountLocked = accountLocked;
 	}
 
-	public List<Role> getRole() {
-		return role;
+	public List<UserAreaMapping> getAreas() {
+		return areas;
 	}
 
-	public void setRole(List<Role> role) {
-		this.role = role;
+	public void setAreas(List<UserAreaMapping> areas) {
+		this.areas = areas;
 	}
-
-
 
 }
